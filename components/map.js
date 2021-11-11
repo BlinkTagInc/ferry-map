@@ -54,12 +54,12 @@ const HoverInfo = ({ hoverInfo }) => {
 
   return (
     <div className="tooltip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
-      <div>Vessel: {hoverInfo.feature.properties.NAME}</div>
-      <div>MMSI: {hoverInfo.feature.properties.MMSI}</div>
-      <div>Last Seen: {formatTimeAgo(hoverInfo.feature.properties.TIME)}</div>
-      <div>Speed: {hoverInfo.feature.properties.SOG / 10} knots</div>
-      <div>Status: {formatNavStat(hoverInfo.feature.properties.NAVSTAT)}</div>
-      <div>Destination: {hoverInfo.feature.properties.DEST} (ETA: {hoverInfo.feature.properties.ETA})</div>
+      <div>Vessel: {hoverInfo.NAME}</div>
+      <div>MMSI: {hoverInfo.MMSI}</div>
+      <div>Last Seen: {formatTimeAgo(hoverInfo.TIME)}</div>
+      <div>Speed: {hoverInfo.SOG} knots</div>
+      <div>Status: {formatNavStat(hoverInfo.NAVSTAT)}</div>
+      <div>Destination: {hoverInfo.DEST} (ETA: {hoverInfo.ETA})</div>
     </div>
   )
 }
@@ -128,7 +128,7 @@ export default function Map({ locations }) {
     setHoverInfo(
       hoveredFeature
         ? {
-            feature: hoveredFeature,
+            ...hoveredFeature.properties,
             x: offsetX,
             y: offsetY
           }
