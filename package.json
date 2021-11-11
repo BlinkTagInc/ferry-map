@@ -1,5 +1,20 @@
 {
   "name": "ferry-map",
+  "description": "A map of San Francisco Bay Ferries using AIS data",
+  "keywords": [
+    "transit",
+    "ais",
+    "transportation"
+  ],
+  "bugs": {
+    "url": "https://github.com/blinktaginc/ferry-map/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/blinktaginc/ferry-map.git"
+  },
+  "license": "MIT",
+  "author": "Brendan Nee <brendan@blinktag.com>",
   "private": true,
   "scripts": {
     "dev": "next dev",
