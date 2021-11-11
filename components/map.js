@@ -1,83 +1,9 @@
 import MapGL, { NavigationControl, Source, Layer } from 'react-map-gl'
 import { useCallback, useState } from 'react'
 import { DateTime } from 'luxon'
+import { useIntervalWhen } from 'rooks'
 
-const formatNavStat = (statusCode) => {
-  const navStatuses = [
-    {
-      statusCode: 0,
-      statusText: 'Under way using engine'
-    },
-    {
-      statusCode: 1,
-      statusText: 'At anchor'
-    },
-    {
-      statusCode: 2,
-      statusText: 'Not under command'
-    },
-    {
-      statusCode: 3,
-      statusText: 'Restricted manoeuverability'
-    },
-    {
-      statusCode: 4,
-      statusText: 'Constrained by her draught'
-    },
-    {
-      statusCode: 5,
-      statusText: 'Moored'
-    },
-    {
-      statusCode: 6,
-      statusText: 'Aground'
-    },
-    {
-      statusCode: 7,
-      statusText: 'Engaged in Fishing'
-    },
-    {
-      statusCode: 8,
-      statusText: 'Under way sailing'
-    },
-    {
-      statusCode: 9,
-      statusText: 'Reserved for future amendment of Navigational Status for HSC'
-    },
-    {
-      statusCode: 10,
-      statusText: 'Reserved for future amendment of Navigational Status for WIG'
-    },
-    {
-      statusCode: 11,
-      statusText: 'Reserved for future use'
-    },
-    {
-      statusCode: 12,
-      statusText: 'Reserved for future use'
-    },
-    {
-      statusCode: 13,
-      statusText: 'Reserved for future use'
-    },
-    {
-      statusCode: 14,
-      statusText: 'AIS-SART is active'
-    },
-    {
-      statusCode: 15,
-      statusText: 'Not defined (default)'
-    }
-  ]
-
-  const status = navStatuses.find(status => status.statusCode === statusCode)
-
-  return status?.statusText || 'Unknown'
-}
-
-const formatTimeAgo = (timestamp) => {
-  return DateTime.fromFormat(timestamp, 'yyyy-MM-dd HH:mm:ss\' GMT\'', { zone: "Etc/GMT" }).toRelative()
-}
+import { formatNavStat, formatTimeAgo } from '../lib/formatters'
 
 const MapData = ({ locations }) => {
   const vessels = locations?.vessels || []
@@ -138,6 +64,50 @@ const HoverInfo = ({ hoverInfo }) => {
   )
 }
 
+const InfoBox = ({ locations }) => {
+  const [timeAgo, setTimeAgo] = useState('')
+
+  useIntervalWhen(
+    () => {
+      setTimeAgo(DateTime.fromISO(locations.retrieved).toRelative({ unit: "seconds" }))
+    },
+    1000, 
+    true,
+    true
+  )
+
+  return (
+    <>
+      <div className="vessel-list mapboxgl-ctrl-group">
+        <h3 className="vessel-list-title">Vessels (last seen)</h3>
+        {locations?.vessels?.map(vessel => {
+          return <div key={vessel.MMSI}>{vessel.NAME} <small>({formatTimeAgo(vessel.TIME)})</small></div> 
+        })}
+        <div className="timeago">Data from {timeAgo}</div>
+      </div>
+      <style jsx>{`
+        .vessel-list {
+          position: absolute;
+          top: 0;
+          right: 0;
+          margin: 10px;
+          padding: 10px;
+          border-radius: 
+        }
+
+        .vessel-list-title {
+          margin: 0;
+        }
+
+        .timeago {
+          font-size: 10px;
+          padding-top: 10px;
+        }
+      `}</style>
+    </>
+  )
+}
+
 export default function Map({ locations }) {
   const [viewport, setViewport] = useState({
     latitude: 37.9,
@@ -152,8 +122,8 @@ export default function Map({ locations }) {
     const {
       features,
       srcEvent: {offsetX, offsetY}
-    } = event;
-    const hoveredFeature = features && features[0];
+    } = event
+    const hoveredFeature = features && features[0]
 
     setHoverInfo(
       hoveredFeature
@@ -163,9 +133,8 @@ export default function Map({ locations }) {
             y: offsetY
           }
         : null
-    );
+    )
   }, [])
-
 
   return (
     <>
@@ -184,12 +153,7 @@ export default function Map({ locations }) {
         <div className="map-nav">
           <NavigationControl onViewportChange={viewport => setViewport(viewport)} />
         </div>
-        <div className="vessel-list mapboxgl-ctrl-group">
-          <h3 className="vessel-list-title">Vessels</h3>
-          {locations?.vessels?.map(vessel => {
-            return <div key={vessel.MMSI}>{vessel.NAME} <small>({formatTimeAgo(vessel.TIME)})</small></div> 
-          })}
-        </div>
+        {locations && <InfoBox locations={locations} />}
       </MapGL>
       <style jsx>{`
         .map-nav {
@@ -197,19 +161,6 @@ export default function Map({ locations }) {
           top: 0;
           left: 0;
           padding: 10px;
-        }
-
-        .vessel-list {
-          position: absolute;
-          top: 0;
-          right: 0;
-          margin: 10px;
-          padding: 10px;
-          border-radius: 
-        }
-
-        .vessel-list-title {
-          margin: 0;
         }
       `}</style>
     </>
