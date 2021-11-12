@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { DateTime } from 'luxon'
 import { useIntervalWhen } from 'rooks'
 
-import { formatNavStat, formatTimeAgo } from '../lib/formatters'
+import { formatHeading, formatNavStat, formatTimeAgo } from '../lib/formatters'
 
 const MapData = ({ locations }) => {
   const vessels = locations?.vessels || []
@@ -58,8 +58,10 @@ const HoverInfo = ({ hoverInfo }) => {
       <div>MMSI: {hoverInfo.MMSI}</div>
       <div>Last Seen: {formatTimeAgo(hoverInfo.TIME)}</div>
       <div>Speed: {hoverInfo.SOG} knots</div>
+      <div>Heading: {formatHeading(hoverInfo.HEADING)}</div>
       <div>Status: {formatNavStat(hoverInfo.NAVSTAT)}</div>
-      <div>Destination: {hoverInfo.DEST} (ETA: {hoverInfo.ETA})</div>
+      <div>Destination: {hoverInfo.DEST}</div>
+      <div>ETA: {hoverInfo.ETA}</div>
     </div>
   )
 }
