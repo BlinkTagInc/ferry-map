@@ -25,10 +25,10 @@ async function fetchWithCache() {
       366983830,
       367391830,
       367425520,
-      366950020,
       367436230,
       368088590,
-      367786010
+      367786010,
+      368053730
     ]
 
     const vessels = data[1].filter(vessel => wetaMMSIs.includes(vessel.MMSI))
