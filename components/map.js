@@ -84,39 +84,49 @@ const InfoBox = ({ locations }) => {
 
   return (
     <>
-      <div className="vessel-list mapboxgl-ctrl-group">
+      <div className="vessel-list-box mapboxgl-ctrl-group">
         <h3 className="vessel-list-title">Vessels (last seen)</h3>
-        {agencies.map(agencyVessels => {
-          return (
-            <>
-              <div className="agency-name">{agencyVessels[0].AGENCY}</div>
-              {agencyVessels.map(vessel => {
-                return <div key={vessel.MMSI}>{vessel.NAME} <small>({formatTimeAgo(vessel.TIME)})</small></div> 
-              })}
-            </>
-          )
-        })}
-        <div className="timeago">Data from {timeAgo}</div>
+        <div className="vessel-list">
+          {agencies.map(agencyVessels => {
+            return (
+              <>
+                <div className="agency-name">{agencyVessels[0].AGENCY}</div>
+                {agencyVessels.map(vessel => {
+                  return <div key={vessel.MMSI}>{vessel.NAME} <small>({formatTimeAgo(vessel.TIME)})</small></div> 
+                })}
+              </>
+            )
+          })}
+          <div className="timeago">Data from {timeAgo}</div>
+        </div>
       </div>
       <style jsx>{`
-        .agency-name {
-          font-weight: 600;
-          border-bottom: 1px solid #ccc;
-          margin-bottom: 4px;
-          font-size: 1.1rem;
-        }
-
-        .vessel-list {
+        .vessel-list-box {
           position: absolute;
           top: 0;
           right: 0;
           margin: 10px;
-          padding: 10px;
-          border-radius: 
+          border-radius: 5px;
+          width: 300px;
         }
 
         .vessel-list-title {
-          margin: 0 0 5px;
+          margin: 0;
+          background: #e5e5e5;
+          padding: 4px 8px;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+        }
+
+        .vessel-list {
+          padding: 0 10px 10px;
+        }
+        
+        .agency-name {
+          font-weight: 600;
+          border-bottom: 1px solid #ccc;
+          margin: 8px 0 4px;
+          font-size: 1.1rem;
         }
 
         .timeago {
