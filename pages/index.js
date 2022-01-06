@@ -10,7 +10,7 @@ export default function Home() {
   const refreshSeconds = 10
   useIntervalWhen(
     async () => {
-      const res = await fetch('/api/locations')
+      const res = await fetch('https://ferry-api.vercel.app/api/locations')
       const data = await res.json()
       setLocations(data)
     },
@@ -30,9 +30,7 @@ export default function Home() {
         <Map locations={locations} />
       </main>
 
-      <footer className={styles.footer}>
-       
-      </footer>
+      <footer className={styles.footer}></footer>
     </div>
   )
 }

@@ -3,7 +3,8 @@ import { useCallback, useState } from 'react'
 import { DateTime } from 'luxon'
 import { useIntervalWhen } from 'rooks'
 
-import { formatHeading, formatNavStat, formatTimeAgo } from '../lib/formatters'
+import { formatHeading, formatTimeAgo } from '../lib/formatters'
+import { groupBy, map, sortBy } from 'lodash'
 
 const MapData = ({ locations }) => {
   const vessels = locations?.vessels || []
@@ -55,11 +56,12 @@ const HoverInfo = ({ hoverInfo }) => {
   return (
     <div className="tooltip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
       <div>Vessel: {hoverInfo.NAME}</div>
+      <div>Agency: {hoverInfo.AGENCY}</div>
       <div>MMSI: {hoverInfo.MMSI}</div>
       <div>Last Seen: {formatTimeAgo(hoverInfo.TIME)}</div>
       <div>Speed: {hoverInfo.SOG} knots</div>
       <div>Heading: {formatHeading(hoverInfo.HEADING)}</div>
-      <div>Status: {formatNavStat(hoverInfo.NAVSTAT)}</div>
+      <div>Status: {hoverInfo.STATUS}</div>
       <div>Destination: {hoverInfo.DEST}</div>
       <div>ETA: {hoverInfo.ETA}</div>
     </div>
@@ -78,16 +80,32 @@ const InfoBox = ({ locations }) => {
     true
   )
 
+  const agencies = sortBy(groupBy(locations?.vessels || [], 'AGENCY'), ([value, key]) => value)
+
   return (
     <>
       <div className="vessel-list mapboxgl-ctrl-group">
         <h3 className="vessel-list-title">Vessels (last seen)</h3>
-        {locations?.vessels?.map(vessel => {
-          return <div key={vessel.MMSI}>{vessel.NAME} <small>({formatTimeAgo(vessel.TIME)})</small></div> 
+        {agencies.map(agencyVessels => {
+          return (
+            <>
+              <div className="agency-name">{agencyVessels[0].AGENCY}</div>
+              {agencyVessels.map(vessel => {
+                return <div key={vessel.MMSI}>{vessel.NAME} <small>({formatTimeAgo(vessel.TIME)})</small></div> 
+              })}
+            </>
+          )
         })}
         <div className="timeago">Data from {timeAgo}</div>
       </div>
       <style jsx>{`
+        .agency-name {
+          font-weight: 600;
+          border-bottom: 1px solid #ccc;
+          margin-bottom: 4px;
+          font-size: 1.1rem;
+        }
+
         .vessel-list {
           position: absolute;
           top: 0;
@@ -98,7 +116,7 @@ const InfoBox = ({ locations }) => {
         }
 
         .vessel-list-title {
-          margin: 0;
+          margin: 0 0 5px;
         }
 
         .timeago {

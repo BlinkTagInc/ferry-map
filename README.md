@@ -1,4 +1,8 @@
-# San Franscisco Ferry Map
+# San Francisco Ferry Map
+
+A map of all ferries in the San Francisco Bay Area.
+
+https://ferry-map.blinktag.com
 
 ## Local setup
 
