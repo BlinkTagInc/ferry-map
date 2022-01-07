@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useIntervalWhen } from 'rooks'
 import styles from '../styles/Home.module.css'
 

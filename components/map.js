@@ -73,25 +73,27 @@ const InfoBox = ({ locations }) => {
 
   useIntervalWhen(
     () => {
-      setTimeAgo(DateTime.fromISO(locations.retrieved).toRelative({ unit: "seconds" }))
+      if (locations) {
+        setTimeAgo(DateTime.fromISO(locations.retrieved).toRelative({ unit: "seconds" }))
+      }
     },
     1000, 
     true,
     true
   )
 
-  const agencies = sortBy(groupBy(locations?.vessels || [], 'AGENCY'), ([value, key]) => value)
+  const agencies = sortBy(groupBy(locations?.vessels || [], 'AGENCY'), vessels => vessels?.[0]?.AGENCY)
 
   return (
     <>
       <div className="vessel-list-box mapboxgl-ctrl-group">
-        <h3 className="vessel-list-title">Vessels (last seen)</h3>
+        <h1 className="site-title">San Francisco Bay Ferry Map</h1>
         <div className="vessel-list">
           {agencies.map(agencyVessels => {
             return (
               <>
                 <div className="agency-name">{agencyVessels[0].AGENCY}</div>
-                {agencyVessels.map(vessel => {
+                {sortBy(agencyVessels, vessel => vessel.NAME).map(vessel => {
                   return <div key={vessel.MMSI}>{vessel.NAME} <small>({formatTimeAgo(vessel.TIME)})</small></div> 
                 })}
               </>
@@ -102,20 +104,16 @@ const InfoBox = ({ locations }) => {
       </div>
       <style jsx>{`
         .vessel-list-box {
-          position: absolute;
-          top: 0;
-          right: 0;
-          margin: 10px;
-          border-radius: 5px;
           width: 300px;
+          height: 100vh;
+          overflow-y: scroll;
         }
 
-        .vessel-list-title {
+        .site-title {
           margin: 0;
-          background: #e5e5e5;
+          font-size: 1.3rem;
           padding: 4px 8px;
-          border-top-left-radius: 5px;
-          border-top-right-radius: 5px;
+          background: #e5e5e5;
         }
 
         .vessel-list {
@@ -167,11 +165,12 @@ export default function Map({ locations }) {
   }, [])
 
   return (
-    <>
+    <div className="map-container">
       <MapGL
         {...viewport}
-        width="100vw"
+        width="calc(100vw - 300px)"
         height="100vh"
+        className="map"
         mapStyle="mapbox://styles/mapbox/dark-v9"
         onViewportChange={setViewport}
         mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
@@ -183,9 +182,12 @@ export default function Map({ locations }) {
         <div className="map-nav">
           <NavigationControl onViewportChange={viewport => setViewport(viewport)} />
         </div>
-        {locations && <InfoBox locations={locations} />}
       </MapGL>
+      <InfoBox locations={locations} />
       <style jsx>{`
+        .map-container {
+          display: flex;
+        }
         .map-nav {
           position: absolute;
           top: 0;
@@ -193,6 +195,6 @@ export default function Map({ locations }) {
           padding: 10px;
         }
       `}</style>
-    </>
+    </div>
   )
 }
