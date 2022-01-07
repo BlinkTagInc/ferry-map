@@ -4,10 +4,10 @@ import { DateTime } from 'luxon'
 import { useIntervalWhen } from 'rooks'
 
 import { formatHeading, formatTimeAgo } from '../lib/formatters'
-import { groupBy, map, sortBy } from 'lodash'
+import { groupBy, lowerCase, sortBy, startCase } from 'lodash'
 
 const MapData = ({ locations }) => {
-  const vessels = locations?.vessels || []
+  const vessels = locations?.vessels.filter(vessel => vessel.TIME !== undefined) || []
   const geojson = {
     "type": "FeatureCollection",
     "features": vessels.map(vessel => {
@@ -68,6 +68,23 @@ const HoverInfo = ({ hoverInfo }) => {
   )
 }
 
+const VesselInfo = ({ vessel }) => {
+  const timeAgo = vessel.TIME !== undefined ? formatTimeAgo(vessel.TIME) : 'Not Found'
+  return (
+    <div>
+      {startCase(lowerCase(vessel.NAME))} <small className={`${vessel.TIME === undefined ? 'not-found' : 'found'}`}>({timeAgo})</small>
+      <style jsx>{`
+        .not-found {
+          background: rgba(236, 0, 0, 0.33);
+        }
+        .found {
+          background: rgba(10, 236, 0, 0.33);
+        }
+      `}</style>
+    </div> 
+  )
+}
+
 const InfoBox = ({ locations }) => {
   const [timeAgo, setTimeAgo] = useState('')
 
@@ -94,7 +111,7 @@ const InfoBox = ({ locations }) => {
               <>
                 <div className="agency-name">{agencyVessels[0].AGENCY}</div>
                 {sortBy(agencyVessels, vessel => vessel.NAME).map(vessel => {
-                  return <div key={vessel.MMSI}>{vessel.NAME} <small>({formatTimeAgo(vessel.TIME)})</small></div> 
+                  return <VesselInfo key={vessel.MMSI} vessel={vessel} />
                 })}
               </>
             )
