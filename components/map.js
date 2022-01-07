@@ -34,14 +34,26 @@ const MapData = ({ locations }) => {
         id="locations"
         type="circle"
         paint={{
-          'circle-color': '#fff200',
+          'circle-color': [
+            'match',
+            ['get', 'AGENCY'],
+            'WETA',
+            '#ff8c00',
+            /* other */ '#fff200'
+          ],
           'circle-opacity': 0.95,
           'circle-radius': {
             base: 4.75,
-            stops: [[10, 7], [22, 180]]
+            stops: [[10, 7], [22, 100]]
           },
           'circle-stroke-width': 2,
-          'circle-stroke-color': 'rgb(246, 247, 178)'
+          'circle-stroke-color': [
+            'match',
+            ['get', 'AGENCY'],
+            'WETA',
+            '#ffd7a6',
+            /* other */ '#f6f7b2'
+          ]
         }}
       />
     </Source>
@@ -69,16 +81,48 @@ const HoverInfo = ({ hoverInfo }) => {
 }
 
 const VesselInfo = ({ vessel }) => {
-  const timeAgo = vessel.TIME !== undefined ? formatTimeAgo(vessel.TIME) : 'Not Found'
+  const timeAgo = vessel.TIME !== undefined ? `(${formatTimeAgo(vessel.TIME)})` : ''
+  const vesselIconClass = vessel.TIME === undefined ? 'not-found' : vessel.AGENCY === 'WETA' ? 'found-weta' : 'found-other'
   return (
-    <div>
-      {startCase(lowerCase(vessel.NAME))} <small className={`${vessel.TIME === undefined ? 'not-found' : 'found'}`}>({timeAgo})</small>
+    <div className="vessel-info">
+      <div
+        className={`vessel-icon ${vesselIconClass}`}
+        title={vessel.TIME === undefined ? 'Not found' : ''}
+      ></div>
+      {startCase(lowerCase(vessel.NAME))}
+      <small className="status-text">{timeAgo}</small>
       <style jsx>{`
-        .not-found {
-          background: rgba(236, 0, 0, 0.33);
+        .vessel-info {
+          display: flex;
+          align-items: center;
         }
-        .found {
-          background: rgba(10, 236, 0, 0.33);
+
+        .vessel-icon {
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          border-width: 2px;
+          border-style: solid;
+          margin-right: 3px;
+        }
+
+        .vessel-icon.found-weta {
+          background: #ff8c00;
+          border-color: #ffd7a6;
+        }
+
+        .vessel-icon.found-other {
+          background: #fff200;
+          border-color: #f6f7b2;
+        }
+
+        .vessel-icon.not-found {
+          background: #787878;
+          border-color: #b5b3b3;
+        }
+
+        .status-text {
+          margin-left: 10px;
         }
       `}</style>
     </div> 
