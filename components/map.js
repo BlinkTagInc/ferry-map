@@ -14,14 +14,14 @@ const Markers = ({ locations, onClick }) => {
         latitude={vessel.LATITUDE}
         longitude={vessel.LONGITUDE}
         offsetLeft={-5}
-        offsetTop={-10}
+        offsetTop={-11}
         onClick={() => onClick(vessel)}
       >
         <img src={vesselIcon} alt="" className="marker" />
         <style jsx>{`
           .marker {
             width: 10px;
-            height: 10px
+            height: 23px;
             cursor: pointer;
             transform: rotate(${heading}deg);
           }
