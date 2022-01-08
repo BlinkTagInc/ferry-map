@@ -1,79 +1,92 @@
-import { useCallback, useState } from 'react'
-import MapGL, { NavigationControl, Source, Layer } from 'react-map-gl'
+import { useState } from 'react'
+import MapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
 
-import { formatHeading, formatTimeAgo } from '../lib/formatters.js'
+import { formatHeading, formatTimeAgo, formatVesselName } from '../lib/formatters.js'
 
-const MapData = ({ locations }) => {
+const Markers = ({ locations, onClick }) => {
   const vessels = locations?.vessels.filter(vessel => vessel.TIME !== undefined) || []
-  const geojson = {
-    "type": "FeatureCollection",
-    "features": vessels.map(vessel => {
-      return {
-        "type": "Feature",
-        "properties": vessel,
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            vessel.LONGITUDE,
-            vessel.LATITUDE
-          ]
-        }
-      }
-    })
-  }
-
-  return (
-    <Source
-      type="geojson"
-      data={geojson}
-    >
-      <Layer
-        id="locations"
-        type="circle"
-        paint={{
-          'circle-color': [
-            'match',
-            ['get', 'AGENCY'],
-            'WETA',
-            '#ff8c00',
-            /* other */ '#fff200'
-          ],
-          'circle-opacity': 0.95,
-          'circle-radius': {
-            base: 4.75,
-            stops: [[10, 7], [22, 100]]
-          },
-          'circle-stroke-width': 2,
-          'circle-stroke-color': [
-            'match',
-            ['get', 'AGENCY'],
-            'WETA',
-            '#ffd7a6',
-            /* other */ '#f6f7b2'
-          ]
-        }}
-      />
-    </Source>
-  )
+  return vessels.map(vessel => {
+    const vesselIcon = vessel.AGENCY === 'WETA' ? 'weta-icon.svg' : 'boat-icon.svg'
+    const heading = vessel.HEADING && vessel.HEADING !== 511 ? parseInt(vessel.HEADING, 10) : 0
+    return (
+      <Marker
+        key={vessel.MMSI}
+        latitude={vessel.LATITUDE}
+        longitude={vessel.LONGITUDE}
+        offsetLeft={-5}
+        offsetTop={-10}
+        onClick={() => onClick(vessel)}
+      >
+        <img src={vesselIcon} alt="" className="marker" />
+        <style jsx>{`
+          .marker {
+            width: 10px;
+            height: 10px
+            cursor: pointer;
+            transform: rotate(${heading}deg);
+          }
+        `}</style>
+      </Marker>
+    )
+  })
 }
 
-const HoverInfo = ({ hoverInfo }) => {
-  if (!hoverInfo) {
+const PopupContent = ({ vessel }) => {
+  if (!vessel) {
     return null
   }
 
   return (
-    <div className="tooltip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
-      <div>Vessel: {hoverInfo.NAME}</div>
-      <div>Agency: {hoverInfo.AGENCY}</div>
-      <div>MMSI: {hoverInfo.MMSI}</div>
-      <div>Last Seen: {formatTimeAgo(hoverInfo.TIME)}</div>
-      <div>Speed: {hoverInfo.SOG} knots</div>
-      <div>Heading: {formatHeading(hoverInfo.HEADING)}</div>
-      <div>Status: {hoverInfo.STATUS}</div>
-      <div>Destination: {hoverInfo.DEST}</div>
-      <div>ETA: {hoverInfo.ETA}</div>
-    </div>
+    <table className="info-table">
+      <tr>
+        <td>Vessel</td>
+        <td>{formatVesselName(vessel.NAME)}</td>
+      </tr>
+      <tr>
+        <td>Agency</td>
+        <td>{vessel.AGENCY}</td>
+      </tr>
+      <tr>
+        <td>MMSI</td>
+        <td>{vessel.MMSI}</td>
+      </tr>
+      <tr>
+        <td>Last Seen</td>
+        <td>{formatTimeAgo(vessel.TIME)}</td>
+      </tr>
+      <tr>
+        <td>Speed</td>
+        <td>{vessel.SOG} knots</td>
+      </tr>
+      <tr>
+        <td>Heading</td>
+        <td>{formatHeading(vessel.HEADING)}</td>
+      </tr>
+      <tr>
+        <td>Status</td>
+        <td>{vessel.STATUS}</td>
+      </tr>
+      <tr>
+        <td>Destination</td>
+        <td>{vessel.DEST}</td>
+      </tr>
+      <tr>
+        <td>ETA</td>
+        <td>{vessel.ETA}</td>
+      </tr>
+      <style jsx>{`
+        .info-table td {
+          border-bottom: 1px solid #ccc;
+        }
+        .info-table tr:last-child td {
+          border-bottom: none;
+        }
+        .info-table td:last-child {
+          font-weight: bold;
+          padding-left: 4px;
+        }
+      `}</style>
+    </table>
   )
 }
 
@@ -85,25 +98,8 @@ export default function Map({ locations }) {
     bearing: 0,
     pitch: 0
   })
-  const [hoverInfo, setHoverInfo] = useState(null)
+  const [popupInfo, setPopupInfo] = useState(null)
 
-  const onHover = useCallback(event => {
-    const {
-      features,
-      srcEvent: {offsetX, offsetY}
-    } = event
-    const hoveredFeature = features && features[0]
-
-    setHoverInfo(
-      hoveredFeature
-        ? {
-            ...hoveredFeature.properties,
-            x: offsetX,
-            y: offsetY
-          }
-        : null
-    )
-  }, [])
 
   return (
     <MapGL
@@ -114,11 +110,20 @@ export default function Map({ locations }) {
       mapStyle="mapbox://styles/mapbox/dark-v9"
       onViewportChange={setViewport}
       mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-      interactiveLayerIds={locations?.vessels?.length > 0 ? ['locations'] : []}
-      onHover={onHover}
     >
-      <MapData locations={locations} />
-      <HoverInfo hoverInfo={hoverInfo} />
+      <Markers locations={locations} onClick={setPopupInfo} />
+      {popupInfo && (
+          <Popup
+            tipSize={10}
+            anchor="top"
+            longitude={popupInfo.LONGITUDE}
+            latitude={popupInfo.LATITUDE}
+            closeOnClick={false}
+            onClose={setPopupInfo}
+          >
+            <PopupContent vessel={popupInfo} />
+          </Popup>
+        )}
       <div className="map-nav">
         <NavigationControl onViewportChange={viewport => setViewport(viewport)} />
       </div>

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { DateTime } from 'luxon'
 import { useIntervalWhen } from 'rooks'
-import { groupBy, lowerCase, sortBy, startCase } from 'lodash'
+import { groupBy, sortBy } from 'lodash'
 
-import { formatTimeAgo } from '../lib/formatters.js'
+import { formatTimeAgo, formatVesselName } from '../lib/formatters.js'
 
 const VesselInfo = ({ vessel }) => {
   const timeAgo = vessel.TIME !== undefined ? `(${formatTimeAgo(vessel.TIME)})` : ''
@@ -14,7 +14,7 @@ const VesselInfo = ({ vessel }) => {
         className={`vessel-icon ${vesselIconClass}`}
         title={vessel.TIME === undefined ? 'Not found' : ''}
       ></div>
-      {startCase(lowerCase(vessel.NAME))}
+      {formatVesselName(vessel.NAME)}
       <small className="status-text">{timeAgo}</small>
       <style jsx>{`
         .vessel-info {
