@@ -145,19 +145,25 @@ const InfoBox = ({ locations }) => {
 
   const agencies = sortBy(groupBy(locations?.vessels || [], 'AGENCY'), vessels => vessels?.[0]?.AGENCY)
 
+  // Always put weta first
+  const sortedAgencies = agencies.length > 0 ? [
+    agencies.find(vessels => vessels[0].AGENCY === 'WETA'),
+    ...agencies.filter(vessels => vessels[0].AGENCY !== 'WETA')
+  ] : []
+
   return (
     <>
       <div className="vessel-list-box mapboxgl-ctrl-group">
         <h1 className="site-title">San Francisco Bay Ferry Map</h1>
         <div className="vessel-list">
-          {agencies.map(agencyVessels => {
+          {sortedAgencies.map((agencyVessels, index) => {
             return (
-              <>
+              <div key={index}>
                 <div className="agency-name">{agencyVessels[0].AGENCY}</div>
                 {sortBy(agencyVessels, vessel => vessel.NAME).map(vessel => {
                   return <VesselInfo key={vessel.MMSI} vessel={vessel} />
                 })}
-              </>
+              </div>
             )
           })}
           <div className="timeago">Data from {timeAgo}</div>
