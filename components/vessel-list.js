@@ -70,10 +70,11 @@ export default function VesselList({ locations }) {
 
   const agencies = sortBy(groupBy(locations?.vessels || [], 'AGENCY'), vessels => vessels?.[0]?.AGENCY)
 
-  // Always put weta first
+  // Always put weta first, followed by Golden Gate
   const sortedAgencies = agencies.length > 0 ? [
     agencies.find(vessels => vessels[0].AGENCY === 'WETA'),
-    ...agencies.filter(vessels => vessels[0].AGENCY !== 'WETA')
+    agencies.find(vessels => vessels[0].AGENCY === 'Golden Gate Ferry'),
+    ...agencies.filter(vessels => !['WETA', 'Golden Gate Ferry'].includes(vessels[0].AGENCY))
   ] : []
 
   return (
