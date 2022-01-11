@@ -11,7 +11,7 @@ export default function Home() {
   const refreshSeconds = 10
   useIntervalWhen(
     async () => {
-      const res = await fetch('https://ferry-api.vercel.app/api/locations')
+      const res = await fetch('https://api.sanfranciscobayferry.com/api/locations')
       const data = await res.json()
       setLocations(data)
     },
@@ -24,7 +24,7 @@ export default function Home() {
     <div>
       <Head>
         <title>San Francisco Bay Ferry Map</title>
-        <meta name="description" content="Map of San Francisco Bay Ferry realtime locations." />
+        <meta name="description" content="Map of San Francisco Passenger Ferry realtime locations for all agencies and companies." />
       </Head>
 
       <main className={styles.main}>

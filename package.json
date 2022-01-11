@@ -1,6 +1,6 @@
 {
   "name": "ferry-map",
-  "description": "A map of San Francisco Bay Ferries using AIS data",
+  "description": "A map of San Francisco Passenger Ferry realtime locations for all agencies and companies using AIS data",
   "keywords": [
     "transit",
     "ais",
