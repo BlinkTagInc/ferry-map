@@ -54,7 +54,7 @@ const VesselInfo = ({ vessel }) => {
   )
 }
 
-export default function VesselList({ locations }) {
+export default function VesselList({ locations, errorMessage }) {
   const [timeAgo, setTimeAgo] = useState('')
 
   useIntervalWhen(
@@ -81,6 +81,7 @@ export default function VesselList({ locations }) {
     <>
       <div className="vessel-list-box mapboxgl-ctrl-group">
         <h1 className="site-title">San Francisco Bay Ferry Map</h1>
+        {errorMessage && <div className="error-message">Error: {errorMessage}</div>}
         <div className="vessel-list">
           {sortedAgencies.map((agencyVessels, index) => {
             return (
@@ -123,6 +124,17 @@ export default function VesselList({ locations }) {
         .timeago {
           font-size: 10px;
           padding-top: 10px;
+        }
+        
+        .error-message {
+          margin: .5rem;
+          padding: .75rem 1.25rem;
+          margin-bottom: 1rem;
+          border: 1px solid transparent;
+          border-radius: .25rem;
+          color: #721c24;
+          background-color: #f8d7da;
+          border-color: #f5c6cb;
         }
       `}</style>
     </>

@@ -8,12 +8,20 @@ import VesselList from '../components/vessel-list.js'
 
 export default function Home() {
   const [locations, setLocations] = useState()
+  const [errorMessage, setErrorMessage] = useState()
   const refreshSeconds = 10
   useIntervalWhen(
     async () => {
-      const res = await fetch('https://api.sanfranciscobayferry.com/api/locations')
-      const data = await res.json()
-      setLocations(data)
+      try {
+        const res = await fetch('https://api.sanfranciscobayferry.com/api/locations')
+        const data = await res.json()
+        setLocations(data)
+        setErrorMessage()
+      } catch (error) {
+        console.error(error)
+        setErrorMessage('Unable to fetch AIS data.')
+      }
+
     },
     1000 * refreshSeconds, 
     true,
@@ -29,7 +37,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <Map locations={locations} />
-        <VesselList locations={locations} />
+        <VesselList locations={locations} errorMessage={errorMessage} />
       </main>
 
       <footer className={styles.footer}></footer>
