@@ -4,7 +4,7 @@ import MapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
 import { formatHeading, formatTimeAgo, formatVesselName } from '../lib/formatters.js'
 
 const Markers = ({ locations, onClick }) => {
-  const vessels = locations?.vessels.filter(vessel => vessel.TIME !== undefined) || []
+  const vessels = locations?.vessels?.filter(vessel => vessel.TIME !== undefined) || []
   return vessels.map(vessel => {
     const vesselIcon = vessel.AGENCY === 'WETA' ? 'weta-icon.svg' : 'boat-icon.svg'
     const heading = vessel.HEADING && vessel.HEADING !== 511 ? parseInt(vessel.HEADING, 10) : 0
