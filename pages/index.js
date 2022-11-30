@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { useIntervalWhen } from 'rooks'
 import styles from '../styles/Home.module.css'
 
-import Map from '../components/map.js'
-import VesselList from '../components/vessel-list.js'
+import Map from '../components/Map.js'
+import VesselList from '../components/VesselList.js'
 
 export default function Home() {
   const [locations, setLocations] = useState()
