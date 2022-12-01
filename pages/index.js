@@ -1,32 +1,23 @@
 import Head from 'next/head'
-import { useState } from 'react'
-import { useIntervalWhen } from 'rooks'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+
 import styles from '../styles/Home.module.css'
+const Map = dynamic(
+  () => import('../components/Map.js'),
+  { ssr: false }
+)
+const VesselList = dynamic(
+  () => import('../components/VesselList.js'),
+  { ssr: false }
+)
+import useInterval from '../hooks/useInterval.js'
 
-import Map from '../components/Map.js'
-import VesselList from '../components/VesselList.js'
+export default function Home({ locations, errorMessage }) {
+  const router = useRouter()
 
-export default function Home() {
-  const [locations, setLocations] = useState()
-  const [errorMessage, setErrorMessage] = useState()
-  const refreshSeconds = 10
-  useIntervalWhen(
-    async () => {
-      try {
-        const res = await fetch('https://api.sanfranciscobayferry.com/api/locations')
-        const data = await res.json()
-        setLocations(data)
-        setErrorMessage()
-      } catch (error) {
-        console.error(error)
-        setErrorMessage('Unable to fetch AIS data.')
-      }
-
-    },
-    1000 * refreshSeconds, 
-    true,
-    true
-  )
+  // Refresh page every 10 seconds
+  useInterval(() => router.replace(router.asPath), 10 * 1000)
 
   return (
     <div>
@@ -43,4 +34,31 @@ export default function Home() {
       <footer className={styles.footer}></footer>
     </div>
   )
+}
+
+
+export async function getServerSideProps() {
+  let locations = []
+  let errorMessage = null
+
+  try {
+    const response = await fetch('https://api.sanfranciscobayferry.com/api/locations')
+
+    if (!response.ok) {
+      console.error(response.status)
+      throw new Error(`Error fetching https://api.sanfranciscobayferry.com/api/locations`)
+    }
+
+    locations = await response.json()
+  } catch (error) {
+    console.error(error)
+    errorMessage = 'Unable to fetch AIS data.'
+  }
+
+  return {
+    props: {
+      locations,
+      errorMessage
+    },
+  }
 }

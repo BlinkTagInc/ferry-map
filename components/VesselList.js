@@ -1,12 +1,19 @@
 import { useState } from 'react'
-import { DateTime } from 'luxon'
-import { useIntervalWhen } from 'rooks'
 import { groupBy, sortBy } from 'lodash'
 
 import { formatTimeAgo, formatVesselName } from '../lib/formatters.js'
+import TimeAgo from '../components/TimeAgo.js'
+import useInterval from '../hooks/useInterval.js'
 
 const VesselInfo = ({ vessel }) => {
-  const timeAgo = vessel.TIME !== undefined ? `(${formatTimeAgo(vessel.TIME)})` : ''
+  const [timeAgo, setTimeAgo] = useState('')
+
+  useInterval(() => {
+    if (vessel) {
+      setTimeAgo(vessel.TIME !== undefined ? `(${formatTimeAgo(vessel.TIME)})` : '')
+    }
+  }, 1000);
+
   const vesselIconClass = vessel.TIME === undefined ? 'not-found' : vessel.AGENCY === 'WETA' ? 'found-weta' : 'found-other'
   return (
     <div className="vessel-info">
@@ -55,19 +62,6 @@ const VesselInfo = ({ vessel }) => {
 }
 
 export default function VesselList({ locations, errorMessage }) {
-  const [timeAgo, setTimeAgo] = useState('')
-
-  useIntervalWhen(
-    () => {
-      if (locations) {
-        setTimeAgo(DateTime.fromISO(locations.retrieved).toRelative({ unit: "seconds" }))
-      }
-    },
-    1000, 
-    true,
-    true
-  )
-
   const agencies = sortBy(groupBy(locations?.vessels || [], 'AGENCY'), vessels => vessels?.[0]?.AGENCY)
 
   // Always put weta first, followed by Golden Gate
@@ -93,14 +87,11 @@ export default function VesselList({ locations, errorMessage }) {
               </div>
             )
           })}
-          <div className="timeago">Data from {timeAgo}</div>
+          <TimeAgo locations={locations} />
         </div>
       </div>
       <style jsx>{`
         .vessel-list-box {
-          width: 300px;
-          height: 100vh;
-          overflow-y: scroll;
         }
 
         .site-title {
@@ -135,6 +126,14 @@ export default function VesselList({ locations, errorMessage }) {
           color: #721c24;
           background-color: #f8d7da;
           border-color: #f5c6cb;
+        }
+
+        @media (min-width: 640px) {
+          .vessel-list-box {
+            width: 300px;
+            height: 100vh;
+            overflow-y: scroll;
+          }
         }
       `}</style>
     </>

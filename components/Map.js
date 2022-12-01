@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import MapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
+import useWindowDimensions from '../hooks/useWindowDimensions.js'
 
 import { formatHeading, formatTimeAgo, formatVesselName } from '../lib/formatters.js'
 
@@ -92,7 +93,7 @@ const PopupContent = ({ vessel }) => {
 
 export default function Map({ locations }) {
   const [viewport, setViewport] = useState({
-    latitude: 37.9,
+    latitude: 37.8,
     longitude: -122.4,
     zoom: 10,
     bearing: 0,
@@ -100,12 +101,16 @@ export default function Map({ locations }) {
   })
   const [popupInfo, setPopupInfo] = useState(null)
 
+  const { width } = useWindowDimensions();
+
+  const mapWidth = width > 640 ? 'calc(100vw - 300px)' : '100%'
+  const mapHeight = width > 640 ? '100vh' : '400px'
 
   return (
     <MapGL
       {...viewport}
-      width="calc(100vw - 300px)"
-      height="100vh"
+      width={mapWidth}
+      height={mapHeight}
       className="map"
       mapStyle="mapbox://styles/mapbox/dark-v9"
       onViewportChange={setViewport}
