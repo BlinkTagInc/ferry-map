@@ -42,11 +42,11 @@ export async function getServerSideProps() {
   let errorMessage = null
 
   try {
-    const response = await fetch('https://api.sanfranciscobayferry.com/api/locations')
+    const response = await fetch('https://api.sanfranciscobayferry.com/locations')
 
     if (!response.ok) {
       console.error(response.status)
-      throw new Error(`Error fetching https://api.sanfranciscobayferry.com/api/locations`)
+      throw new Error(`Error fetching https://api.sanfranciscobayferry.com/locations`)
     }
 
     locations = await response.json()
