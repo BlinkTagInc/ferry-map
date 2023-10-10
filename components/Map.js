@@ -112,7 +112,7 @@ export default function Map({ locations }) {
       width={mapWidth}
       height={mapHeight}
       className="map"
-      mapStyle="mapbox://styles/mapbox/dark-v9"
+      mapStyle="mapbox://styles/mapbox/dark-v11"
       onViewportChange={setViewport}
       mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
     >
