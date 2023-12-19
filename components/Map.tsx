@@ -1,6 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
+import useWindowDimensions from '@/hooks/useWindowDimensions.js'
 
 import { formatHeading, formatTimeAgo, formatVesselName } from '@/lib/formatters.js'
 
@@ -100,12 +101,26 @@ export default function Map({ locations }) {
     pitch: 0,
   })
   const [popupInfo, setPopupInfo] = useState(null)
+  const [isHydrated, setIsHydrated] = useState(false)
+
+  const { width } = useWindowDimensions();
+
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
+
+  if (!isHydrated) {
+    return <div style={{ width: '100%' }} />
+  }
+
+  const mapWidth = width > 640 ? 'calc(100vw - 300px)' : '100%'
+  const mapHeight = width > 640 ? '100vh' : '400px'
 
   return (
     <MapGL
       {...viewport}
-      width="calc(100vw - 300px)"
-      height="100vh"
+      width={mapWidth}
+      height={mapHeight}
       className="map"
       mapStyle="mapbox://styles/mapbox/dark-v11"
       onViewportChange={setViewport}
