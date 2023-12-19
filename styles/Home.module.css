@@ -1,7 +1,0 @@
-@media (min-width: 640px) {
-  .main {
-    min-height: 100vh;
-    flex: 1;
-    display: flex;
-  }
-}

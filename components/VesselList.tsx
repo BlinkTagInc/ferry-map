@@ -1,9 +1,11 @@
+'use client'
+
 import { useState } from 'react'
 import { groupBy, sortBy } from 'lodash'
 
-import { formatTimeAgo, formatVesselName } from '../lib/formatters.js'
-import TimeAgo from '../components/TimeAgo.js'
-import useInterval from '../hooks/useInterval.js'
+import { formatTimeAgo, formatVesselName } from '@/lib/formatters.js'
+import TimeAgo from '@/components/TimeAgo.tsx'
+import useInterval from '@/hooks/useInterval.js'
 
 const VesselInfo = ({ vessel }) => {
   const [timeAgo, setTimeAgo] = useState('')

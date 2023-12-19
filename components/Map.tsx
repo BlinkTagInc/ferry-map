@@ -1,8 +1,8 @@
+'use client'
 import { useState } from 'react'
 import MapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
-import useWindowDimensions from '../hooks/useWindowDimensions.js'
 
-import { formatHeading, formatTimeAgo, formatVesselName } from '../lib/formatters.js'
+import { formatHeading, formatTimeAgo, formatVesselName } from '@/lib/formatters.js'
 
 const Markers = ({ locations, onClick }) => {
   const vessels = locations?.vessels?.filter(vessel => vessel.TIME !== undefined) || []
@@ -97,20 +97,15 @@ export default function Map({ locations }) {
     longitude: -122.4,
     zoom: 10,
     bearing: 0,
-    pitch: 0
+    pitch: 0,
   })
   const [popupInfo, setPopupInfo] = useState(null)
-
-  const { width } = useWindowDimensions();
-
-  const mapWidth = width > 640 ? 'calc(100vw - 300px)' : '100%'
-  const mapHeight = width > 640 ? '100vh' : '400px'
 
   return (
     <MapGL
       {...viewport}
-      width={mapWidth}
-      height={mapHeight}
+      width="calc(100vw - 300px)"
+      height="100vh"
       className="map"
       mapStyle="mapbox://styles/mapbox/dark-v11"
       onViewportChange={setViewport}

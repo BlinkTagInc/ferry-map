@@ -1,7 +1,9 @@
+'use client'
+
 import { useState } from "react";
 import { DateTime } from 'luxon'
 
-import useInterval from "../hooks/useInterval";
+import useInterval from "@/hooks/useInterval";
 
 const TimeAgo = ({ locations }) => {
   const [timeAgo, setTimeAgo] = useState('')
