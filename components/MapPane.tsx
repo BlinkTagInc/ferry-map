@@ -7,8 +7,8 @@ import Map from '@/components/Map.tsx'
 import VesselList from '@/components/VesselList.tsx'
 
 export default function MapPane() {
-  const [locations, setLocations] = useState()
-  const [errorMessage, setErrorMessage] = useState()
+  const [locations, setLocations] = useState<{} | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const fetchLocations = async () => {
     try {
