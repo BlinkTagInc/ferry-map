@@ -21,23 +21,23 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",
-    "next": "14.0.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-map-gl": "^6.1.21"
   },
   "devDependencies": {
-    "@types/node": "20.10.4",
-    "@types/react": "18.2.45",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.1.1",
-    "typescript": "5.3.3"
+    "@types/node": "20.14.11",
+    "@types/react": "18.3.3",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.3",
+    "typescript": "5.5.3"
   },
   "prettier": {
     "singleQuote": true,
@@ -45,6 +45,9 @@
   },
   "lint-staged": {
     "*.js": "prettier --write",
+    "*.ts": "prettier --write",
+    "*.tsx": "prettier --write",
+    "*.jsx": "prettier --write",
     "*.json": "prettier --write",
     "*.{js,css,md}": "prettier --write"
   }
