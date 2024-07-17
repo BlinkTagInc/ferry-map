@@ -16,7 +16,7 @@ const VesselInfo = ({ vessel }) => {
     }
   }, 1000);
 
-  const vesselIconClass = vessel.TIME === undefined ? 'not-found' : vessel.AGENCY === 'WETA' ? 'found-weta' : 'found-other'
+  const vesselIconClass = vessel.TIME === undefined ? 'not-found' : vessel.AGENCY === 'San Francisco Bay Ferry' ? 'found-sfbf' : 'found-other'
   return (
     <div className="vessel-info">
       <div
@@ -40,7 +40,7 @@ const VesselInfo = ({ vessel }) => {
           margin-right: 3px;
         }
 
-        .vessel-icon.found-weta {
+        .vessel-icon.found-sfbf {
           background: #ff8c00;
           border-color: #ffd7a6;
         }
@@ -66,11 +66,11 @@ const VesselInfo = ({ vessel }) => {
 export default function VesselList({ locations, errorMessage }) {
   const agencies = sortBy(groupBy(locations?.vessels || [], 'AGENCY'), vessels => vessels?.[0]?.AGENCY)
 
-  // Always put weta first, followed by Golden Gate
+  // Always put San Francisco Bay Ferry first, followed by Golden Gate
   const sortedAgencies = agencies.length > 0 ? [
-    agencies.find(vessels => vessels[0].AGENCY === 'WETA'),
+    agencies.find(vessels => vessels[0].AGENCY === 'San Francisco Bay Ferry'),
     agencies.find(vessels => vessels[0].AGENCY === 'Golden Gate Ferry'),
-    ...agencies.filter(vessels => !['WETA', 'Golden Gate Ferry'].includes(vessels[0].AGENCY))
+    ...agencies.filter(vessels => !['San Francisco Bay Ferry', 'Golden Gate Ferry'].includes(vessels[0].AGENCY))
   ] : []
 
   return (

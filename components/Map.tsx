@@ -8,7 +8,7 @@ import { formatHeading, formatTimeAgo, formatVesselName } from '@/lib/formatters
 const Markers = ({ locations, onClick }) => {
   const vessels = locations?.vessels?.filter(vessel => vessel.TIME !== undefined) || []
   return vessels.map(vessel => {
-    const vesselIcon = vessel.AGENCY === 'WETA' ? 'weta-icon.svg' : 'boat-icon.svg'
+    const vesselIcon = vessel.AGENCY === 'San Francisco Bay Ferry' ? 'sfbf-icon.svg' : 'boat-icon.svg'
     const heading = vessel.HEADING && vessel.HEADING !== 511 ? parseInt(vessel.HEADING, 10) : 0
     return (
       <Marker
