@@ -4,7 +4,8 @@ import MapPane from '@/components/MapPane'
 
 export const metadata: Metadata = {
   title: 'San Francisco Bay Ferry Map',
-  description: 'Map of San Francisco Passenger Ferry realtime locations for all agencies and companies.',
+  description:
+    'Map of San Francisco Passenger Ferry realtime locations for all agencies and companies.',
 }
 
 export default async function Home() {

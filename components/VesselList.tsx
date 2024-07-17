@@ -12,11 +12,18 @@ const VesselInfo = ({ vessel }) => {
 
   useInterval(() => {
     if (vessel) {
-      setTimeAgo(vessel.TIME !== undefined ? `(${formatTimeAgo(vessel.TIME)})` : '')
+      setTimeAgo(
+        vessel.TIME !== undefined ? `(${formatTimeAgo(vessel.TIME)})` : '',
+      )
     }
-  }, 1000);
+  }, 1000)
 
-  const vesselIconClass = vessel.TIME === undefined ? 'not-found' : vessel.AGENCY === 'San Francisco Bay Ferry' ? 'found-sfbf' : 'found-other'
+  const vesselIconClass =
+    vessel.TIME === undefined
+      ? 'not-found'
+      : vessel.AGENCY === 'San Francisco Bay Ferry'
+        ? 'found-sfbf'
+        : 'found-other'
   return (
     <div className="vessel-info">
       <div
@@ -59,33 +66,50 @@ const VesselInfo = ({ vessel }) => {
           margin-left: 10px;
         }
       `}</style>
-    </div> 
+    </div>
   )
 }
 
 export default function VesselList({ locations, errorMessage }) {
-  const agencies = sortBy(groupBy(locations?.vessels || [], 'AGENCY'), vessels => vessels?.[0]?.AGENCY)
+  const agencies = sortBy(
+    groupBy(locations?.vessels || [], 'AGENCY'),
+    (vessels) => vessels?.[0]?.AGENCY,
+  )
 
   // Always put San Francisco Bay Ferry first, followed by Golden Gate
-  const sortedAgencies = agencies.length > 0 ? [
-    agencies.find(vessels => vessels[0].AGENCY === 'San Francisco Bay Ferry'),
-    agencies.find(vessels => vessels[0].AGENCY === 'Golden Gate Ferry'),
-    ...agencies.filter(vessels => !['San Francisco Bay Ferry', 'Golden Gate Ferry'].includes(vessels[0].AGENCY))
-  ] : []
+  const sortedAgencies =
+    agencies.length > 0
+      ? [
+          agencies.find(
+            (vessels) => vessels[0].AGENCY === 'San Francisco Bay Ferry',
+          ),
+          agencies.find((vessels) => vessels[0].AGENCY === 'Golden Gate Ferry'),
+          ...agencies.filter(
+            (vessels) =>
+              !['San Francisco Bay Ferry', 'Golden Gate Ferry'].includes(
+                vessels[0].AGENCY,
+              ),
+          ),
+        ]
+      : []
 
   return (
     <>
       <div className="vessel-list-box mapboxgl-ctrl-group">
         <h1 className="site-title">San Francisco Bay Ferry Map</h1>
-        {errorMessage && <div className="error-message">Error: {errorMessage}</div>}
+        {errorMessage && (
+          <div className="error-message">Error: {errorMessage}</div>
+        )}
         <div className="vessel-list">
           {sortedAgencies.map((agencyVessels, index) => {
             return (
               <div key={index}>
                 <div className="agency-name">{agencyVessels[0].AGENCY}</div>
-                {sortBy(agencyVessels, vessel => vessel.NAME).map(vessel => {
-                  return <VesselInfo key={vessel.MMSI} vessel={vessel} />
-                })}
+                {sortBy(agencyVessels, (vessel) => vessel.NAME).map(
+                  (vessel) => {
+                    return <VesselInfo key={vessel.MMSI} vessel={vessel} />
+                  },
+                )}
               </div>
             )
           })}
@@ -106,7 +130,7 @@ export default function VesselList({ locations, errorMessage }) {
         .vessel-list {
           padding: 0 10px 10px;
         }
-        
+
         .agency-name {
           font-weight: 600;
           border-bottom: 1px solid #ccc;
@@ -118,13 +142,13 @@ export default function VesselList({ locations, errorMessage }) {
           font-size: 10px;
           padding-top: 10px;
         }
-        
+
         .error-message {
-          margin: .5rem;
-          padding: .75rem 1.25rem;
+          margin: 0.5rem;
+          padding: 0.75rem 1.25rem;
           margin-bottom: 1rem;
           border: 1px solid transparent;
-          border-radius: .25rem;
+          border-radius: 0.25rem;
           color: #721c24;
           background-color: #f8d7da;
           border-color: #f5c6cb;

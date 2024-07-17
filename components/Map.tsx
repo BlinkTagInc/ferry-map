@@ -3,13 +3,24 @@ import { useEffect, useState } from 'react'
 import MapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
 import useWindowDimensions from '@/hooks/useWindowDimensions.js'
 
-import { formatHeading, formatTimeAgo, formatVesselName } from '@/lib/formatters.js'
+import {
+  formatHeading,
+  formatTimeAgo,
+  formatVesselName,
+} from '@/lib/formatters.js'
 
 const Markers = ({ locations, onClick }) => {
-  const vessels = locations?.vessels?.filter(vessel => vessel.TIME !== undefined) || []
-  return vessels.map(vessel => {
-    const vesselIcon = vessel.AGENCY === 'San Francisco Bay Ferry' ? 'sfbf-icon.svg' : 'boat-icon.svg'
-    const heading = vessel.HEADING && vessel.HEADING !== 511 ? parseInt(vessel.HEADING, 10) : 0
+  const vessels =
+    locations?.vessels?.filter((vessel) => vessel.TIME !== undefined) || []
+  return vessels.map((vessel) => {
+    const vesselIcon =
+      vessel.AGENCY === 'San Francisco Bay Ferry'
+        ? 'sfbf-icon.svg'
+        : 'boat-icon.svg'
+    const heading =
+      vessel.HEADING && vessel.HEADING !== 511
+        ? parseInt(vessel.HEADING, 10)
+        : 0
     return (
       <Marker
         key={vessel.MMSI}
@@ -103,7 +114,7 @@ export default function Map({ locations }) {
   const [popupInfo, setPopupInfo] = useState(null)
   const [isHydrated, setIsHydrated] = useState(false)
 
-  const { width } = useWindowDimensions();
+  const { width } = useWindowDimensions()
 
   useEffect(() => {
     setIsHydrated(true)
@@ -128,19 +139,21 @@ export default function Map({ locations }) {
     >
       <Markers locations={locations} onClick={setPopupInfo} />
       {popupInfo && (
-          <Popup
-            tipSize={10}
-            anchor="top"
-            longitude={popupInfo.LONGITUDE}
-            latitude={popupInfo.LATITUDE}
-            closeOnClick={false}
-            onClose={setPopupInfo}
-          >
-            <PopupContent vessel={popupInfo} />
-          </Popup>
-        )}
+        <Popup
+          tipSize={10}
+          anchor="top"
+          longitude={popupInfo.LONGITUDE}
+          latitude={popupInfo.LATITUDE}
+          closeOnClick={false}
+          onClose={setPopupInfo}
+        >
+          <PopupContent vessel={popupInfo} />
+        </Popup>
+      )}
       <div className="map-nav">
-        <NavigationControl onViewportChange={viewport => setViewport(viewport)} />
+        <NavigationControl
+          onViewportChange={(viewport) => setViewport(viewport)}
+        />
       </div>
       <style jsx>{`
         .map-nav {
