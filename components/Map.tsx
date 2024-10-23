@@ -1,6 +1,13 @@
 'use client'
 import { useEffect, useState } from 'react'
-import MapGL, { NavigationControl, Marker, Popup } from 'react-map-gl'
+import {
+  GeolocateControl,
+  FullscreenControl,
+  NavigationControl,
+  Marker,
+  Popup,
+} from 'react-map-gl'
+import Map from 'react-map-gl/maplibre'
 import useWindowDimensions from '@/hooks/useWindowDimensions.js'
 
 import {
@@ -24,10 +31,8 @@ const Markers = ({ locations, onClick }) => {
     return (
       <Marker
         key={vessel.MMSI}
-        latitude={vessel.LATITUDE}
-        longitude={vessel.LONGITUDE}
-        offsetLeft={-5}
-        offsetTop={-11}
+        latitude={Number(vessel.LATITUDE)}
+        longitude={Number(vessel.LONGITUDE)}
         onClick={() => onClick(vessel)}
       >
         <img src={vesselIcon} alt="" className="marker" />
@@ -51,42 +56,44 @@ const PopupContent = ({ vessel }) => {
 
   return (
     <table className="info-table">
-      <tr>
-        <td>Vessel</td>
-        <td>{formatVesselName(vessel.NAME)}</td>
-      </tr>
-      <tr>
-        <td>Agency</td>
-        <td>{vessel.AGENCY}</td>
-      </tr>
-      <tr>
-        <td>MMSI</td>
-        <td>{vessel.MMSI}</td>
-      </tr>
-      <tr>
-        <td>Last Seen</td>
-        <td>{formatTimeAgo(vessel.TIME)}</td>
-      </tr>
-      <tr>
-        <td>Speed</td>
-        <td>{vessel.SOG} knots</td>
-      </tr>
-      <tr>
-        <td>Heading</td>
-        <td>{formatHeading(vessel.HEADING)}</td>
-      </tr>
-      <tr>
-        <td>Status</td>
-        <td>{vessel.STATUS}</td>
-      </tr>
-      <tr>
-        <td>Destination</td>
-        <td>{vessel.DEST}</td>
-      </tr>
-      <tr>
-        <td>ETA</td>
-        <td>{vessel.ETA}</td>
-      </tr>
+      <tbody>
+        <tr>
+          <td>Vessel</td>
+          <td>{formatVesselName(vessel.NAME)}</td>
+        </tr>
+        <tr>
+          <td>Agency</td>
+          <td>{vessel.AGENCY}</td>
+        </tr>
+        <tr>
+          <td>MMSI</td>
+          <td>{vessel.MMSI}</td>
+        </tr>
+        <tr>
+          <td>Last Seen</td>
+          <td>{formatTimeAgo(vessel.TIME)}</td>
+        </tr>
+        <tr>
+          <td>Speed</td>
+          <td>{vessel.SOG} knots</td>
+        </tr>
+        <tr>
+          <td>Heading</td>
+          <td>{formatHeading(vessel.HEADING)}</td>
+        </tr>
+        <tr>
+          <td>Status</td>
+          <td>{vessel.STATUS}</td>
+        </tr>
+        <tr>
+          <td>Destination</td>
+          <td>{vessel.DEST}</td>
+        </tr>
+        <tr>
+          <td>ETA</td>
+          <td>{vessel.ETA}</td>
+        </tr>
+      </tbody>
       <style jsx>{`
         .info-table td {
           border-bottom: 1px solid #ccc;
@@ -103,14 +110,7 @@ const PopupContent = ({ vessel }) => {
   )
 }
 
-export default function Map({ locations }) {
-  const [viewport, setViewport] = useState({
-    latitude: 37.8,
-    longitude: -122.4,
-    zoom: 10,
-    bearing: 0,
-    pitch: 0,
-  })
+export default function FerryMap({ locations }) {
   const [popupInfo, setPopupInfo] = useState(null)
   const [isHydrated, setIsHydrated] = useState(false)
 
@@ -128,41 +128,33 @@ export default function Map({ locations }) {
   const mapHeight = width > 640 ? '100vh' : '400px'
 
   return (
-    <MapGL
-      {...viewport}
-      width={mapWidth}
-      height={mapHeight}
-      className="map"
-      mapStyle="mapbox://styles/mapbox/dark-v11"
-      onViewportChange={setViewport}
-      mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+    <Map
+      initialViewState={{
+        latitude: 37.8,
+        longitude: -122.4,
+        zoom: 10,
+        bearing: 0,
+        pitch: 0,
+      }}
+      style={{ width: mapWidth, height: mapHeight }}
+      mapStyle="https://weta.boats/mapstyle.json"
+      maplibreLogo
     >
       <Markers locations={locations} onClick={setPopupInfo} />
       {popupInfo && (
         <Popup
-          tipSize={10}
           anchor="top"
-          longitude={popupInfo.LONGITUDE}
-          latitude={popupInfo.LATITUDE}
+          longitude={Number(popupInfo.LONGITUDE)}
+          latitude={Number(popupInfo.LATITUDE)}
           closeOnClick={false}
-          onClose={setPopupInfo}
+          onClose={() => setPopupInfo(null)}
         >
           <PopupContent vessel={popupInfo} />
         </Popup>
       )}
-      <div className="map-nav">
-        <NavigationControl
-          onViewportChange={(viewport) => setViewport(viewport)}
-        />
-      </div>
-      <style jsx>{`
-        .map-nav {
-          position: absolute;
-          top: 0;
-          left: 0;
-          padding: 10px;
-        }
-      `}</style>
-    </MapGL>
+      <GeolocateControl position="top-left" />
+      <FullscreenControl position="top-left" />
+      <NavigationControl position="top-left" />
+    </Map>
   )
 }

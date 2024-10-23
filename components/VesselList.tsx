@@ -95,7 +95,7 @@ export default function VesselList({ locations, errorMessage }) {
 
   return (
     <>
-      <div className="vessel-list-box mapboxgl-ctrl-group">
+      <div className="vessel-list-box">
         <h1 className="site-title">San Francisco Bay Ferry Map</h1>
         {errorMessage && (
           <div className="error-message">Error: {errorMessage}</div>
