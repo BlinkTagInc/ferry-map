@@ -26,6 +26,7 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
+    "mapbox-gl": "^3.8.0",
     "maplibre-gl": "^4.7.1",
     "next": "15.0.3",
     "react": "18.3.1",
