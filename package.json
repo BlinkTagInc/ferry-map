@@ -28,13 +28,13 @@
     "luxon": "^3.7.2",
     "mapbox-gl": "^3.17.0",
     "maplibre-gl": "^4.7.1",
-    "next": "15.5.7",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
+    "next": "15.5.8",
+    "react": "19.2.2",
+    "react-dom": "19.2.2",
     "react-map-gl": "^7.1.9"
   },
   "devDependencies": {
-    "@types/node": "22.19.1",
+    "@types/node": "22.19.2",
     "@types/react": "19.2.7",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
@@ -53,5 +53,5 @@
     "*.json": "prettier --write",
     "*.{js,css,md}": "prettier --write"
   },
-  "packageManager": "pnpm@10.24.0"
+  "packageManager": "pnpm@10.25.0"
 }
