@@ -21,17 +21,17 @@ importers:
         specifier: ^4.7.1
         version: 4.7.1
       next:
-        specifier: 15.5.8
-        version: 15.5.8(react-dom@19.2.2(react@19.2.2))(react@19.2.2)
+        specifier: 15.5.9
+        version: 15.5.9(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react:
-        specifier: 19.2.2
-        version: 19.2.2
+        specifier: 19.2.3
+        version: 19.2.3
       react-dom:
-        specifier: 19.2.2
-        version: 19.2.2(react@19.2.2)
+        specifier: 19.2.3
+        version: 19.2.3(react@19.2.3)
       react-map-gl:
         specifier: ^7.1.9
-        version: 7.1.9(mapbox-gl@3.17.0)(maplibre-gl@4.7.1)(react-dom@19.2.2(react@19.2.2))(react@19.2.2)
+        version: 7.1.9(mapbox-gl@3.17.0)(maplibre-gl@4.7.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
     devDependencies:
       '@types/node':
         specifier: 22.19.2
@@ -220,8 +220,8 @@ packages:
     resolution: {integrity: sha512-AzBy3095fTFPjDjmWpR2w6HVRAZJ6hQZUCwk5Plz6EyfnfuQW1odeW5i2Ai47Y6TBA2hQnC+azscjBSALpaWgw==}
     hasBin: true
 
-  '@next/env@15.5.8':
-    resolution: {integrity: sha512-ejZHa3ogTxcy851dFoNtfB5B2h7AbSAtHbR5CymUlnz4yW1QjHNufVpvTu8PTnWBKFKjrd4k6Gbi2SsCiJKvxw==}
+  '@next/env@15.5.9':
+    resolution: {integrity: sha512-4GlTZ+EJM7WaW2HEZcyU317tIQDjkQIyENDLxYJfSWlfqguN+dHkZgyQTV/7ykvobU7yEH5gKvreNrH4B6QgIg==}
 
   '@next/swc-darwin-arm64@15.5.7':
     resolution: {integrity: sha512-IZwtxCEpI91HVU/rAUOOobWSZv4P2DeTtNaCdHqLcTJU4wdNXgAySvKa/qJCgR5m6KI8UsKDXtO2B31jcaw1Yw==}
@@ -538,8 +538,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  next@15.5.8:
-    resolution: {integrity: sha512-Tma2R50eiM7Fx6fbDeHiThq7sPgl06mBr76j6Ga0lMFGrmaLitFsy31kykgb8Z++DR2uIEKi2RZ0iyjIwFd15Q==}
+  next@15.5.9:
+    resolution: {integrity: sha512-agNLK89seZEtC5zUHwtut0+tNrc0Xw4FT/Dg+B/VLEo9pAcS9rtTKpek3V6kVcVwsB2YlqMaHdfZL4eLEVYuCg==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
     hasBin: true
     peerDependencies:
@@ -604,10 +604,10 @@ packages:
   quickselect@3.0.0:
     resolution: {integrity: sha512-XdjUArbK4Bm5fLLvlm5KpTFOiOThgfWWI4axAZDWg4E/0mKdZyI9tNEfds27qCi1ze/vwTR16kvmmGhRra3c2g==}
 
-  react-dom@19.2.2:
-    resolution: {integrity: sha512-fhyD2BLrew6qYf4NNtHff1rLXvzR25rq49p+FeqByOazc6TcSi2n8EYulo5C1PbH+1uBW++5S1SG7FcUU6mlDg==}
+  react-dom@19.2.3:
+    resolution: {integrity: sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg==}
     peerDependencies:
-      react: ^19.2.2
+      react: ^19.2.3
 
   react-map-gl@7.1.9:
     resolution: {integrity: sha512-KsCc8Gyn05wVGlHZoopaiiCr0RCAQ6LDISo5sEy1/pV/d7RlozkF946tiX7IgyijJQMRujHol5QdwUPESjh73w==}
@@ -622,8 +622,8 @@ packages:
       maplibre-gl:
         optional: true
 
-  react@19.2.2:
-    resolution: {integrity: sha512-BdOGOY8OKRBcgoDkwqA8Q5XvOIhoNx/Sh6BnGJlet2Abt0X5BK0BDrqGyQgLhAVjD2nAg5f6o01u/OPUhG022Q==}
+  react@19.2.3:
+    resolution: {integrity: sha512-Ku/hhYbVjOQnXDZFv2+RibmLFGwFdeeKHFcOTlrt7xplBnya5OGn/hIRDsqDiSUcfORsDC7MPxwork8jBwsIWA==}
     engines: {node: '>=0.10.0'}
 
   resolve-protobuf-schema@2.1.0:
@@ -913,7 +913,7 @@ snapshots:
       rw: 1.3.3
       tinyqueue: 3.0.0
 
-  '@next/env@15.5.8': {}
+  '@next/env@15.5.9': {}
 
   '@next/swc-darwin-arm64@15.5.7':
     optional: true
@@ -1232,15 +1232,15 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  next@15.5.8(react-dom@19.2.2(react@19.2.2))(react@19.2.2):
+  next@15.5.9(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
-      '@next/env': 15.5.8
+      '@next/env': 15.5.9
       '@swc/helpers': 0.5.15
       caniuse-lite: 1.0.30001739
       postcss: 8.4.31
-      react: 19.2.2
-      react-dom: 19.2.2(react@19.2.2)
-      styled-jsx: 5.1.6(react@19.2.2)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+      styled-jsx: 5.1.6(react@19.2.3)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.5.7
       '@next/swc-darwin-x64': 15.5.7
@@ -1290,22 +1290,22 @@ snapshots:
 
   quickselect@3.0.0: {}
 
-  react-dom@19.2.2(react@19.2.2):
+  react-dom@19.2.3(react@19.2.3):
     dependencies:
-      react: 19.2.2
+      react: 19.2.3
       scheduler: 0.27.0
 
-  react-map-gl@7.1.9(mapbox-gl@3.17.0)(maplibre-gl@4.7.1)(react-dom@19.2.2(react@19.2.2))(react@19.2.2):
+  react-map-gl@7.1.9(mapbox-gl@3.17.0)(maplibre-gl@4.7.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@maplibre/maplibre-gl-style-spec': 19.3.3
       '@types/mapbox-gl': 3.4.1
-      react: 19.2.2
-      react-dom: 19.2.2(react@19.2.2)
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
     optionalDependencies:
       mapbox-gl: 3.17.0
       maplibre-gl: 4.7.1
 
-  react@19.2.2: {}
+  react@19.2.3: {}
 
   resolve-protobuf-schema@2.1.0:
     dependencies:
@@ -1414,10 +1414,10 @@ snapshots:
     dependencies:
       ansi-regex: 6.2.0
 
-  styled-jsx@5.1.6(react@19.2.2):
+  styled-jsx@5.1.6(react@19.2.3):
     dependencies:
       client-only: 0.0.1
-      react: 19.2.2
+      react: 19.2.3
 
   supercluster@8.0.1:
     dependencies:
