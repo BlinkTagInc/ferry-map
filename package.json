@@ -24,9 +24,9 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "luxon": "^3.7.2",
-    "mapbox-gl": "^3.17.0",
+    "mapbox-gl": "^3.18.0",
     "maplibre-gl": "^4.7.1",
     "next": "15.5.9",
     "react": "19.2.3",
@@ -34,11 +34,11 @@
     "react-map-gl": "^7.1.9"
   },
   "devDependencies": {
-    "@types/node": "22.19.2",
-    "@types/react": "19.2.7",
+    "@types/node": "24.10.9",
+    "@types/react": "19.2.9",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "typescript": "5.9.3"
   },
   "prettier": {
@@ -53,5 +53,5 @@
     "*.json": "prettier --write",
     "*.{js,css,md}": "prettier --write"
   },
-  "packageManager": "pnpm@10.25.0"
+  "packageManager": "pnpm@10.28.1"
 }
