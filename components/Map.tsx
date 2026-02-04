@@ -1,13 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react'
-import {
+import Map, {
   GeolocateControl,
   FullscreenControl,
   NavigationControl,
   Marker,
   Popup,
-} from 'react-map-gl'
-import Map from 'react-map-gl/maplibre'
+} from 'react-map-gl/maplibre'
 import useWindowDimensions from '@/hooks/useWindowDimensions.js'
 
 import {
