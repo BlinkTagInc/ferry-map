@@ -18,6 +18,9 @@
 # production
 /build
 
+# Generated MapLibre worker assets
+/public/maplibre/
+
 # miscellaneous
 .DS_Store
 *.pem

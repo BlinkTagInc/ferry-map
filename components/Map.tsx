@@ -128,6 +128,7 @@ export default function FerryMap({ locations }) {
 
   return (
     <Map
+      workerUrl="/maplibre/maplibre-gl-worker.mjs"
       initialViewState={{
         latitude: 37.8,
         longitude: -122.4,
